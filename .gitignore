@@ -2,3 +2,7 @@ __pycache__/
 .vscode/
 .streamlit/
 *.pyc
+models/*.keras
+
+# Keep the TFLite model
+!models/*.tflite

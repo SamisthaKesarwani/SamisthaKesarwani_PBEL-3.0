@@ -1,16 +1,20 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-from tensorflow.keras.models import load_model
+import tensorflow as tf
 
 from class_names import class_names
 from disease_info import disease_info, default_info
 
 @st.cache_resource
 def load_ai_model():
-    return load_model("models/crop_disease_model.keras")
+    interpreter = tf.lite.Interpreter(model_path="models/crop_disease_model.tflite")
+    interpreter.allocate_tensors()
+    return interpreter
 
-model = load_ai_model()
+interpreter = load_ai_model()
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 st.set_page_config(
     page_title="Leafie",
@@ -102,7 +106,9 @@ if uploaded_file:
             img = np.expand_dims(img, axis=0)
 
             with st.spinner("Analyzing leaf..."):
-                prediction = model.predict(img, verbose=0)
+                interpreter.set_tensor(input_details[0]['index'], img)
+                interpreter.invoke()
+                prediction = interpreter.get_tensor(output_details[0]['index'])
 
             predicted_index = np.argmax(prediction)
             confidence = np.max(prediction) * 100
