@@ -2,7 +2,7 @@
 
 AI-Powered Crop Disease Detection from Leaf Images
 
-Leafie is a deep learning web app that identifies plant diseases from a photo of a leaf. Upload an image, and it predicts the crop and the disease affecting it, along with the cause, symptoms, and treatment — plus a confidence score so you know how much to trust the prediction.
+Leafie is a web app that identifies plant diseases from a photo of a leaf. Upload an image, and it predicts the crop and the disease affecting it, along with the cause, symptoms, and treatment — plus a confidence score so you know how much to trust the prediction.
 
 Live Demo
 🔗 https://leafie.streamlit.app
