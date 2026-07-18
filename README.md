@@ -5,9 +5,11 @@ AI-Powered Crop Disease Detection from Leaf Images
 Leafie is a web app that identifies plant diseases from a photo of a leaf. Upload an image, and it predicts the crop and the disease affecting it, along with the cause, symptoms, and treatment — plus a confidence score so you know how much to trust the prediction.
 
 Live Demo
-🔗 Streamlit App: <add your link here after deploying>
+🔗 https://leafie.streamlit.app
 
-<!-- Add a screenshot-->
+![Leafie Home page](<Screenshot 2026-07-18 203210.png>)
+
+![Leafie Prediction](<Screenshot 2026-07-18 203257.png>)
 
 📌 Features
 
@@ -16,26 +18,23 @@ Live Demo
 - 🎯 Confidence score with a Very High → Very Low scale
 - 🦠 Cause, symptoms, and treatment for the detected disease
 - 📄 Downloadable text report of the result
-- 🎨 Clean, minimal Streamlit interface
+- 🎨 Light green themed Streamlit interface
 
 🛠 Tech Stack
 
 Programming Language
-
 - Python 3
 
 Deep Learning
-
-- TensorFlow / Keras
+- TensorFlow / Keras (training)
+- TensorFlow Lite (deployment — quantized for a lighter, faster-loading app)
 
 Image Processing
-
 - Pillow (PIL)
 - NumPy
 
 Web Framework
-
-- Streamlit
+- Streamlit (deployed on Streamlit Community Cloud)
 
 📂 Dataset
 
@@ -63,6 +62,8 @@ Dense(38, softmax)
 - Early stopping on validation accuracy (patience = 3)
 - Best validation accuracy: **~86.3%**
 
+For deployment, the trained `.keras` model is converted and quantized to **TensorFlow Lite**, shrinking it from ~255MB to ~21MB with no meaningful accuracy loss — this keeps the app lightweight and fast to load on Streamlit Cloud.
+
 ⚙️ How It Works
 
 Step 1 — Upload
@@ -72,17 +73,17 @@ Step 2 — Preprocessing
 The image is resized to 224×224 and converted to a NumPy array.
 
 Step 3 — Prediction
-The trained CNN outputs a probability distribution over 38 classes. The class with the highest probability is taken as the prediction, and its probability becomes the confidence score.
+The TFLite interpreter runs the CNN and outputs a probability distribution over 38 classes. The class with the highest probability is taken as the prediction, and its probability becomes the confidence score.
 
 Step 4 — Confidence Interpretation
 
-| Confidence | Label                                              |
-| ---------- | -------------------------------------------------- |
-| ≥ 90%      | 🟢 Very High                                       |
-| 75–89%     | 🟢 High                                            |
-| 60–74%     | 🟡 Moderate                                        |
-| 40–59%     | 🟠 Low                                             |
-| < 40%      | 🔴 Very Low — user is prompted to retake the photo |
+| Confidence | Label |
+|---|---|
+| ≥ 90% | 🟢 Very High |
+| 75–89% | 🟢 High |
+| 60–74% | 🟡 Moderate |
+| 40–59% | 🟠 Low |
+| < 40% | 🔴 Very Low — user is prompted to retake the photo |
 
 Step 5 — Disease Info
 Based on the predicted class, Leafie displays the cause, symptoms, and treatment, and lets the user download a summary report.
@@ -90,13 +91,11 @@ Based on the predicted class, Leafie displays the cause, symptoms, and treatment
 🚀 Running Locally
 
 Install dependencies
-
 ```
 pip install -r requirements.txt
 ```
 
 Run the app
-
 ```
 streamlit run app.py
 ```
@@ -107,9 +106,12 @@ streamlit run app.py
 Leafie/
 │
 ├── app.py
+├── convert_model.py
 ├── class_names.py
 ├── disease_info.py
 ├── requirements.txt
+├── .streamlit/
+│   └── config.toml
 ├── models/
 │   └── crop_disease_model.tflite
 └── README.md
@@ -123,8 +125,10 @@ Leafie/
 - Mobile-friendly camera capture
 
 👩‍💻 Developed By
+
 **Samistha Kesarwani**
-IBM PBEL 3.0, AI (BATCH - 02)
+IBM PBEL 3.0 AI (Batch - 2)
 
 📄 License
+
 This project is developed for educational and academic purposes.
