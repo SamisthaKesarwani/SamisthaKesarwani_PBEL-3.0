@@ -1,14 +1,14 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 
 from class_names import class_names
 from disease_info import disease_info, default_info
 
 @st.cache_resource
 def load_ai_model():
-    interpreter = tf.lite.Interpreter(model_path="models/crop_disease_model.tflite")
+    interpreter = tflite.Interpreter(model_path="models/crop_disease_model.tflite")
     interpreter.allocate_tensors()
     return interpreter
 
