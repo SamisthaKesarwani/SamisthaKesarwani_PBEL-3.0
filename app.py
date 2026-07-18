@@ -26,9 +26,6 @@ st.markdown("""
 <style>
 
 /* Simple white background */
-.stApp {
-    background-color: white;
-}
 
 /* Simple result box */
 .result-box{
@@ -66,6 +63,10 @@ st.markdown("""
     font-weight:bold;
     margin-bottom:6px;
 }
+            
+h1 {
+    color: #1B5E20 !important;
+}            
 
 </style>
 """, unsafe_allow_html=True)
